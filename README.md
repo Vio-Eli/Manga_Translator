@@ -1,0 +1,2 @@
+# Manga_Translator
+ 
