@@ -22,12 +22,6 @@ class Recognizer:
         self.model.eval()
 
     def __call__(self, img):
-        # if isinstance(img_or_path, str) or isinstance(img_or_path, Path):
-        #     img = Image.open(img_or_path)
-        # elif isinstance(img_or_path, Image.Image):
-        #     img = img_or_path
-        # else:
-        #     raise ValueError(f'Invalid value of img_or_path: {img_or_path}')
 
         img = Image.fromarray(np.uint8(img)).convert('L').convert('RGB')
 
