@@ -1,10 +1,10 @@
+from collections import namedtuple
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.nn.init as init
 from torchvision import models
 from torchvision.models.vgg import model_urls
-from collections import namedtuple
 
 
 def init_weights(modules):

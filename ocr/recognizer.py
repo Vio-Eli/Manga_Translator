@@ -1,5 +1,4 @@
 import re
-from pathlib import Path
 
 import jaconv
 import numpy as np
