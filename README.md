@@ -1,5 +1,7 @@
 
-![](images/logo.png)
+<p align="center">
+  <img src="https://github.com/Vio-Eli/Manga_Translator/blob/main/images/logo.png" alt=""/>
+</p>
 
 ## About
 Input a manga panel and get the translated version! Currently, only does japanese to english.
