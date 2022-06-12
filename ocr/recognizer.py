@@ -22,8 +22,10 @@ class Recognizer:
 
     def __call__(self, img):
 
+        # Convert image from numpy to PIL
         img = Image.fromarray(np.uint8(img)).convert('L').convert('RGB')
 
+        # Process image
         x = self._preprocess(img)
         x = self.model.generate(x[None].to(self.model.device))[0].cpu()
         x = self.tokenizer.decode(x, skip_special_tokens=True)
@@ -36,6 +38,7 @@ class Recognizer:
 
 
 def post_process(text):
+    """ Beautify text """
     text = ''.join(text.split())
     text = text.replace('…', '...')
     text = re.sub('[・.]{2,}', lambda x: (x.end() - x.start()) * '.', text)

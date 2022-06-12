@@ -48,6 +48,8 @@ def reformat_img(image):
 
 
 def printProgressBar(prefix='', suffix='', decimals=1, length=100, fill='█'):
+    """ Call in a loop to create terminal progress bar """
+
     def progress_hook(count, blockSize, totalSize):
         progress = count * blockSize / totalSize
         percent = ("{0:." + str(decimals) + "f}").format(progress * 100)
@@ -57,6 +59,7 @@ def printProgressBar(prefix='', suffix='', decimals=1, length=100, fill='█'):
 
 
 def loadImage(img_file):
+    """ Load image from file path or URL """
     img = io.imread(img_file)  # RGB order
     if img.shape[0] == 2: img = img[0]
     if len(img.shape) == 2: img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
@@ -68,6 +71,7 @@ def loadImage(img_file):
 
 def group_text_box(polys, slope_ths=0.1, ycenter_ths=0.5, height_ths=0.5, width_ths=1.0, add_margin=0.05,
                    sort_output=True):
+    """ Group text boxes based on their slope, ycenter, height, width """
     # poly top-left, top-right, low-right, low-left
     horizontal_list, free_list, combined_list, merged_list = [], [], [], []
 
@@ -267,9 +271,7 @@ def compute_ratio_and_resize(img, width, height, model_height):
 
 
 def calculate_ratio(width, height):
-    """
-    Calculate aspect ratio for normal use case (w>h) and vertical text (h>w)
-    """
+    """ Calculate aspect ratio for normal use case (w>h) and vertical text (h>w) """
     ratio = width / height
     if ratio < 1.0:
         ratio = 1. / ratio
@@ -277,6 +279,7 @@ def calculate_ratio(width, height):
 
 
 def four_point_transform(image, rect):
+    """ Transform the image to the rectangle """
     (tl, tr, br, bl) = rect
 
     widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
@@ -290,7 +293,7 @@ def four_point_transform(image, rect):
     heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
     maxHeight = max(int(heightA), int(heightB))
 
-    dst = np.array([[0, 0],[maxWidth - 1, 0],[maxWidth - 1, maxHeight - 1],[0, maxHeight - 1]], dtype = "float32")
+    dst = np.array([[0, 0], [maxWidth - 1, 0], [maxWidth - 1, maxHeight - 1], [0, maxHeight - 1]], dtype="float32")
 
     # compute the perspective transform matrix and then apply it
     M = cv2.getPerspectiveTransform(rect, dst)

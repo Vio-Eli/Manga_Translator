@@ -230,6 +230,7 @@ def getPoly_core(boxes, labels, mapper, linkmap):
 
 
 def getDetBoxes(textmap, linkmap, text_threshold, link_threshold, low_text, poly=False, estimate_num_chars=False):
+    """ get boxes from text regions """
     if poly and estimate_num_chars:
         raise Exception("Estimating the number of characters not currently supported with poly.")
     boxes, labels, mapper = getDetBoxes_core(textmap, linkmap, text_threshold, link_threshold, low_text,
@@ -244,6 +245,7 @@ def getDetBoxes(textmap, linkmap, text_threshold, link_threshold, low_text, poly
 
 
 def adjustResultCoordinates(polys, ratio_w, ratio_h, ratio_net=2):
+    """ adjust result coordinates """
     if len(polys) > 0:
         polys = np.array(polys, dtype=object)
         for k in range(len(polys)):
