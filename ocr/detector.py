@@ -10,6 +10,7 @@ from .utils import group_text_box, resize_aspect_ratio
 
 
 def get_detector(model, device, quantize=True, cudnn_benchmark=False):
+    """ Returns a craft detector object """
     net = CRAFT()
 
     if device == 'cpu':
@@ -28,22 +29,25 @@ def get_detector(model, device, quantize=True, cudnn_benchmark=False):
     return net
 
 
-def detect(detector, device, img, min_size=20, text_threshold=0.7, low_text=0.4,
+def detect(detector, device, img, min_size=10, text_threshold=0.5, low_text=0.4,
            link_threshold=0.4, canvas_size=2560, mag_ratio=1.,
            slope_ths=0.1, ycenter_ths=0.5, height_ths=0.5,
-           width_ths=0.5, add_margin=0.1, optimal_num_chars=None):
+           width_ths=0.5, add_margin=0.3, optimal_num_chars=None):
+    """ Returns a list of text boxes from img """
 
     text_box_list = get_textbox(detector, img, canvas_size, mag_ratio,
                                 text_threshold, link_threshold, low_text,
                                 False, device, optimal_num_chars)
 
-    horizontal_list_agg, free_list_agg = [], []
+    horizontal_list_agg, free_list_agg = [], []  # for some reason, it'll be a tuple of lists
 
     for text_box in text_box_list:
         horizontal_list, free_list = group_text_box(text_box, slope_ths,
                                                     ycenter_ths, height_ths,
                                                     width_ths, add_margin,
                                                     (optimal_num_chars is None))
+
+        # make sure the box is not too small
         if min_size:
             horizontal_list = [i for i in horizontal_list if max(
                 i[1] - i[0], i[3] - i[2]) > min_size]
@@ -55,6 +59,7 @@ def detect(detector, device, img, min_size=20, text_threshold=0.7, low_text=0.4,
     return horizontal_list_agg, free_list_agg
 
 
+# A nice little function to make the code a bit cleaner
 def diff(input_list):
     return max(input_list)-min(input_list)
 
